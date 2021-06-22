@@ -2,12 +2,13 @@ package guru.springframework.sfgpetclinic.services.map;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 public abstract class BaseServiceMap<T, I> {
 
-    protected Map<I, T> innerMap =new HashMap<>();
+    protected Map<I, T> innerMap =new LinkedHashMap<>();
 
     Set<T> getSetValues() {
         return new HashSet<>(innerMap.values());
