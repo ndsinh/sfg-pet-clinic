@@ -23,7 +23,7 @@ public class PetServiceMap extends BaseServiceMap<Pet, Long>
 
     @Override
     public Pet save(Pet object) {
-        return super.put(object.getId(), object);
+        return super.put(object);
     }
 
     @Override

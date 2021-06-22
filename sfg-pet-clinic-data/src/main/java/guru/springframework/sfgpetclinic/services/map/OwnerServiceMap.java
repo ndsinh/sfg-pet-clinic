@@ -22,7 +22,7 @@ public class OwnerServiceMap extends BaseServiceMap<Owner, Long>
 
     @Override
     public Owner save(Owner object) {
-        return super.put(object.getId(), object);
+        return super.put(object);
     }
 
     @Override

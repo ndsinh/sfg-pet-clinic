@@ -1,13 +1,16 @@
 package guru.springframework.sfgpetclinic.services.map;
 
+import guru.springframework.sfgpetclinic.model.BaseEntity;
+
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class BaseServiceMap<T, I> {
+public abstract class BaseServiceMap<T extends BaseEntity, I extends Long> {
 
-    protected Map<I, T> innerMap =new LinkedHashMap<>();
+    protected Map<Long, T> innerMap = new LinkedHashMap<>();
 
     Set<T> getSetValues() {
         return new LinkedHashSet<>(innerMap.values());
@@ -17,9 +20,15 @@ public abstract class BaseServiceMap<T, I> {
         return innerMap.getOrDefault(id, null);
     }
 
-    T put (I id, T object) {
-        innerMap.put(id, object);
-        return object;
+    T put(T object) {
+        if (object != null) {
+            if (object.getId() == null) {
+                object.setId(genNextId());
+            }
+            innerMap.put(object.getId(), object);
+            return object;
+        }
+        throw new RuntimeException("Object cannot be null");
     }
 
     void removeByKey(I id) {
@@ -30,5 +39,12 @@ public abstract class BaseServiceMap<T, I> {
         innerMap.entrySet().removeIf(
                 entry -> entry.getValue().equals(object)
         );
+    }
+
+    private Long genNextId() {
+        if (innerMap.isEmpty()) {
+            return 1L;
+        }
+        return Collections.max(innerMap.keySet()) + 1;
     }
 }

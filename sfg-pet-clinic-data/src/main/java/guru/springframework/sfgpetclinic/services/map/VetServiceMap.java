@@ -21,7 +21,7 @@ public class VetServiceMap extends BaseServiceMap<Vet, Long>
 
     @Override
     public Vet save(Vet object) {
-        return super.put(object.getId(), object);
+        return super.put(object);
     }
 
     @Override
