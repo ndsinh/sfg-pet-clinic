@@ -126,3 +126,6 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
+sfg-pet-clinic-web/target/
+
+sfg-pet-clinic-data/target/
