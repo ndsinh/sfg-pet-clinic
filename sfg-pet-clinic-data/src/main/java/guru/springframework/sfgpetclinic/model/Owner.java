@@ -3,6 +3,7 @@ package guru.springframework.sfgpetclinic.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
@@ -12,6 +13,6 @@ public class Owner extends Person {
     private String address;
     private String city;
     private String telephone;
-    private Set<Pet> pets;
+    private Set<Pet> pets = new LinkedHashSet<>();
 
 }
