@@ -8,7 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class BaseServiceMap<T extends BaseEntity, I extends Long> {
+public abstract class BaseMapService<T extends BaseEntity, I extends Long> {
 
     protected Map<Long, T> innerMap = new LinkedHashMap<>();
 
