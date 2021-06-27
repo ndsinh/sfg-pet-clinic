@@ -1,12 +1,17 @@
 package guru.springframework.sfgpetclinic.controllers;
 
+import guru.springframework.sfgpetclinic.model.Owner;
 import guru.springframework.sfgpetclinic.services.OwnerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/owners")
@@ -24,8 +29,36 @@ public class OwnerController {
         return "owners/index";
     }
     @RequestMapping({"/find", "/find.html"})
-    public String findOwners() {
-        return "notimplemented";
+    public String findOwners(Model model) {
+        model.addAttribute("owner", new Owner());
+        return "owners/findOwners";
+    }
+
+    @GetMapping()
+    public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
+
+        // allow parameterless GET request for /owners to return all records
+        if (owner.getLastName() == null) {
+            owner.setLastName(""); // empty string signifies broadest possible search
+        }
+
+        // find owners by last name
+        List<Owner> listOwnersResult = ownerService.findAllByLastNameLike("%" + owner.getLastName() + "%");
+        if (listOwnersResult.isEmpty()) {
+            // no owners found
+            result.rejectValue("lastName", "notFound", "not found");
+            return "owners/findOwners";
+        }
+        else if (listOwnersResult.size() == 1) {
+            // 1 owner found
+            owner = listOwnersResult.iterator().next();
+            return "redirect:/owners/" + owner.getId();
+        }
+        else {
+            // multiple owners found
+            model.put("selections", listOwnersResult);
+            return "owners/ownersList";
+        }
     }
 
     @GetMapping("/{ownerId}")
