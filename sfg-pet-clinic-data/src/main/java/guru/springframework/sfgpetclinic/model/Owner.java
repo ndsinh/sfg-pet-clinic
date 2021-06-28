@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.LinkedHashSet;
+import java.util.Locale;
 import java.util.Set;
 
 @Getter
@@ -28,5 +29,19 @@ public class Owner extends Person {
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Pet> pets = new LinkedHashSet<>();
+
+    public Pet getPets(String name, boolean ignoreNew) {
+        name = name.toLowerCase();
+        for (Pet pet : getPets()) {
+            if (!ignoreNew || !pet.isNew()) {
+                String compName = pet.getName();
+                compName = compName.toLowerCase();
+                if (compName.equals(name)) {
+                    return pet;
+                }
+            }
+        }
+        return null;
+    }
 
 }
