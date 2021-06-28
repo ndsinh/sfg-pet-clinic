@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.beans.PropertyEditorSupport;
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Controller
@@ -49,8 +51,14 @@ public class PetController {
     }
 
     @InitBinder
-    public void initOwnerBinder(WebDataBinder binder) {
+    public void initDataBinder(WebDataBinder binder) {
         binder.setDisallowedFields("id");
+        binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException{
+                setValue(LocalDate.parse(text));
+            }
+        });
     }
 
     @GetMapping("/pets/new")
